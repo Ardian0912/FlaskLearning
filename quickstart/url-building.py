@@ -1,6 +1,22 @@
 from flask import Flask
+from flask.helpers import url_for
+from markupsafe import escape
 app = Flask(__name__)
 
-@app.route('/projects/')
-def show_user_profile(username):
-    return 'Project Page'
+@app.route('/')
+def index():
+    return 'Index'
+
+@app.route('/login')
+def login():
+    return 'login'
+
+@app.route('/user/<username>')
+def profile(username):
+    return '{}\'s profile'.format(escape(username))
+
+with app.test_request_context():
+    print(url_for('index'))
+    print(url_for('login'))
+    print(url_for('login',next='/'))
+    print(url_for('profile',username='John Doe'))
